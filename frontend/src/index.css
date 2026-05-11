@@ -1,0 +1,156 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+
+:root {
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --text-dark: #0f172a;
+  --text-body: #475569;
+  --text-muted: #94a3b8;
+  --border: #e2e8f0;
+  --primary: #2563eb;
+  --primary-glow: rgba(37, 99, 235, 0.15);
+  --sidebar-width: 260px;
+  --sidebar-bg: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background: var(--bg-main);
+  color: var(--text-body);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.011em;
+}
+
+.cv-metric-card {
+  @apply bg-white border border-slate-200 rounded-[24px] p-8 shadow-sm transition-all duration-300 relative overflow-hidden flex justify-between items-center;
+}
+.cv-metric-card:hover {
+  @apply shadow-lg -translate-y-1 border-blue-100;
+}
+.cv-metric-card::after {
+  content: "";
+  @apply absolute top-0 left-0 right-0 h-[4px] bg-blue-600 opacity-0 transition-opacity duration-300;
+}
+.cv-metric-card:hover::after {
+  @apply opacity-100;
+}
+
+.cv-metric-label {
+  @apply text-[11px] font-black text-slate-400 uppercase tracking-[1.5px] mb-2 block;
+}
+.cv-metric-value {
+  @apply text-[36px] font-black text-slate-900 leading-none tracking-[-1.5px];
+}
+
+.cv-icon-box {
+  @apply w-[56px] h-[56px] rounded-2xl flex items-center justify-center flex-shrink-0 transition-all shadow-sm border border-transparent;
+}
+.cv-icon-box.blue {
+  @apply bg-blue-50 text-blue-600 border-blue-100;
+}
+.cv-icon-box.amber {
+  @apply bg-amber-50 text-amber-600 border-amber-100;
+}
+.cv-icon-box.green {
+  @apply bg-emerald-50 text-emerald-600 border-emerald-100;
+}
+.cv-icon-box.violet {
+  @apply bg-violet-50 text-violet-600 border-violet-100;
+}
+.cv-icon-box svg {
+  @apply w-7 h-7 fill-current;
+}
+
+.cv-table-wrapper {
+  @apply bg-white border border-slate-200 rounded-[32px] shadow-sm overflow-hidden;
+}
+
+.cv-table {
+  @apply w-full border-collapse;
+}
+.cv-table th {
+  @apply bg-slate-50/50 px-8 py-5 text-left text-[11px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100;
+}
+.cv-table td {
+  @apply px-8 py-6 text-[15px] text-slate-600 border-b border-slate-50 transition-colors align-middle;
+}
+.cv-table tr:last-child td {
+  @apply border-0;
+}
+.cv-table tr:hover td {
+  @apply bg-slate-50/30;
+}
+
+.cv-badge {
+  @apply inline-flex px-3.5 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest border transition-all;
+}
+.cv-badge-confirmed {
+  @apply bg-emerald-50 text-emerald-600 border-emerald-100 shadow-sm shadow-emerald-600/5;
+}
+.cv-badge-pending {
+  @apply bg-amber-50 text-amber-600 border-amber-100 shadow-sm shadow-amber-600/5;
+}
+.cv-badge-cancelled {
+  @apply bg-red-50 text-red-600 border-red-100 shadow-sm shadow-red-600/5;
+}
+
+.cv-btn {
+  @apply px-7 py-3.5 rounded-full font-black text-[13px] uppercase tracking-widest transition-all flex items-center justify-center gap-2.5 cursor-pointer active:scale-[0.96] shadow-sm;
+}
+.cv-btn-primary {
+  @apply bg-blue-600 text-white shadow-xl shadow-blue-600/25 hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-blue-600/30;
+}
+.cv-btn-outline {
+  @apply bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 hover:-translate-y-0.5 hover:shadow-md;
+}
+.cv-btn-sm {
+  @apply px-4 py-2 text-[11px] rounded-xl;
+}
+
+.cv-main-container {
+  @apply p-10 max-w-[1600px] mx-auto;
+}
+.cv-section-header {
+  @apply mb-10;
+}
+.cv-page-title {
+  @apply text-[32px] font-black text-slate-900 tracking-tight leading-tight;
+}
+.cv-page-subtitle {
+  @apply text-slate-400 text-[16px] font-bold mt-1.5 tracking-tight;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.cv-sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+.cv-sidebar::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+}
