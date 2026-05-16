@@ -8,6 +8,8 @@ module.exports = (sequelize, DataTypes) => {
       Booking.belongsTo(models.Client, { foreignKey: 'ClientID' });
       Booking.belongsTo(models.Package, { foreignKey: 'PackageID' });
       Booking.hasMany(models.Payment, { foreignKey: 'BookingID' });
+      Booking.hasMany(models.ClientJourney, { foreignKey: 'BookingID' });
+
     }
   }
 

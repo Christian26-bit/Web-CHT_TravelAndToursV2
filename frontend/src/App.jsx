@@ -10,6 +10,7 @@ import AdminBookings from "./pages/admin/AdminBookings";
 import AdminEmployees from "./pages/admin/AdminEmployees";
 import AdminTourPackages from "./pages/admin/AdminTourPackages";
 import AdminClients from "./pages/admin/AdminClients";
+import AdminFlights from "./pages/admin/AdminFlights";
 
 import UserDashboard from "./pages/user/UserDashboard";
 import UserBookings from "./pages/user/UserBookings";
@@ -19,8 +20,10 @@ import UserPayments from "./pages/user/UserPayments";
 import UserTourPackages from "./pages/user/UserTourPackages";
 import UserTransportation from "./pages/user/UserTransportation";
 import UserTrips from "./pages/user/UserTrips";
+import UserJourneys from "./pages/user/UserJourneys";
 
 import BookingWizard from "./pages/bookings/BookingWizard";
+
 
 function App() {
   return (
@@ -36,11 +39,9 @@ function App() {
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/bookings" element={<AdminBookings />} />
               <Route path="/admin/employees" element={<AdminEmployees />} />
-              <Route
-                path="/admin/tour-packages"
-                element={<AdminTourPackages />}
-              />
+              <Route path="/admin/tour-packages" element={<AdminTourPackages />} />
               <Route path="/admin/clients" element={<AdminClients />} />
+              <Route path="/admin/flights" element={<AdminFlights />} />
             </Route>
           </Route>
 
@@ -61,7 +62,9 @@ function App() {
                 element={<UserTransportation />}
               />
               <Route path="/user/trips" element={<UserTrips />} />
+              <Route path="/user/journeys" element={<UserJourneys />} />
               <Route path="/bookings/step/:step" element={<BookingWizard />} />
+
             </Route>
           </Route>
 

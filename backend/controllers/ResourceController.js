@@ -1,4 +1,4 @@
-const { Accommodation, Vehicle, Trip, Package } = require("../models");
+const { Accommodation, Vehicle, Trip, Package, Flight } = require("../models");
 
 exports.listHotels = async (req, res) => {
   try {
@@ -26,6 +26,16 @@ exports.listTrips = async (req, res) => {
     res.json({ success: true, data: trips });
   } catch (error) {
     console.error("List Trips Error:", error);
+    res.status(500).json({ success: false, error: "Internal server error." });
+  }
+};
+
+exports.listFlights = async (req, res) => {
+  try {
+    const flights = await Flight.findAll();
+    res.json({ success: true, data: flights });
+  } catch (error) {
+    console.error("List Flights Error:", error);
     res.status(500).json({ success: false, error: "Internal server error." });
   }
 };

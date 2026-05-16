@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   class Client extends Model {
     static associate(models) {
       Client.hasMany(models.Booking, { foreignKey: 'ClientID' });
+      Client.belongsTo(models.Employee, { foreignKey: 'managedByEmployeeId', as: 'AccountManager' });
     }
   }
 
@@ -45,6 +46,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false,
       field: 'dateRegistered'
+    },
+    managedByEmployeeId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'employee',
+        key: 'employeeId'
+      },
+      field: 'managedByEmployeeId'
     }
   }, {
     sequelize,

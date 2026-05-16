@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContextInstance";
+import chtLogo from "../assets/cht-logo.png";
 
 export default function Sidebar({ role }) {
   const { logout } = useAuth();
@@ -10,115 +11,61 @@ export default function Sidebar({ role }) {
     navigate("/login");
   };
 
-  const navItems =
-    role === "admin"
-      ? [
-          {
-            name: "Dashboard",
-            path: "/admin/dashboard",
-            icon: "M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z",
-          },
-          {
-            name: "Bookings",
-            path: "/admin/bookings",
-            icon: "M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm0 16H5V8h14v11z",
-          },
-          {
-            name: "Tour Packages",
-            path: "/admin/tour-packages",
-            icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1a2 2 0 002 2v1.93zm6.9-2.54A1.99 1.99 0 0016 16h-1v-3a1 1 0 00-1-1H8v-2h2a1 1 0 001-1V7h2a2 2 0 002-2v-.41A7.99 7.99 0 0120 12c0 2.08-.8 3.97-2.1 5.39z",
-          },
-          {
-            name: "Customers",
-            path: "/admin/clients",
-            icon: "M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z",
-          },
-          {
-            name: "User Roles",
-            path: "/admin/employees",
-            icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2a7.2 7.2 0 01-6-3.22c.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08a7.2 7.2 0 01-6 3.22z",
-          },
-        ]
-      : [
-          {
-            name: "Dashboard",
-            path: "/user/dashboard",
-            icon: "M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z",
-          },
-          {
-            name: "My Bookings",
-            path: "/user/bookings",
-            icon: "M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm0 16H5V8h14v11z",
-          },
-          {
-            name: "Tour Packages",
-            path: "/user/tour-packages",
-            icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1a2 2 0 002 2v1.93zm6.9-2.54A1.99 1.99 0 0016 16h-1v-3a1 1 0 00-1-1H8v-2h2a1 1 0 001-1V7h2a2 2 0 002-2v-.41A7.99 7.99 0 0120 12c0 2.08-.8 3.97-2.1 5.39z",
-          },
-          {
-            name: "Clients",
-            path: "/user/clients",
-            icon: "M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z",
-          },
-          {
-            name: "Transportation",
-            path: "/user/transportation",
-            icon: "M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z",
-          },
-          {
-            name: "Hotels",
-            path: "/user/hotels",
-            icon: "M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm0-4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm9 4h4v-4h-4v4zm0-6h4V3h-4v4zM5 21h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2zM5 5h14v14H5V5z",
-          },
-          {
-            name: "Payments",
-            path: "/user/payments",
-            icon: "M21 7.28V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-2.28c.59-.35 1-.98 1-1.72V9c0-.74-.41-1.37-1-1.72zM20 9v6h-7V9h7zM5 5h14v2h-6c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h6v2H5V5z",
-          },
-        ];
+  const adminItems = [
+    { name: "Dashboard", path: "/admin/dashboard", icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" },
+    { name: "Bookings", path: "/admin/bookings", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" },
+    { name: "Tour Packages", path: "/admin/tour-packages", icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" },
+    { name: "Customers", path: "/admin/clients", icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" },
+    { name: "User Roles", path: "/admin/employees", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" },
+  ];
+
+  const userItems = [
+    { name: "Dashboard", path: "/user/dashboard", icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" },
+    { name: "New Booking", path: "/bookings/step/1", icon: "M12 4v16m8-8H4" },
+    { name: "Customers", path: "/user/clients", icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" },
+    { name: "Tour Packages", path: "/user/tour-packages", icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" },
+    { name: "Trips", path: "/user/trips", icon: "M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z" },
+    { name: "Hotels", path: "/user/hotels", icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1" },
+    { name: "Transportation", path: "/user/transportation", icon: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" },
+    { name: "Payments", path: "/user/payments", icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+  ];
+
+  const items = role === "admin" ? adminItems : userItems;
 
   return (
-    <aside className="w-[280px] h-screen fixed left-0 top-0 border-r border-slate-100 bg-white flex flex-col z-50 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
-      {/* Sidebar Brand */}
-      <div className="flex items-center gap-4 p-8 pb-6 mb-2">
-        <div className="w-[48px] h-[48px] bg-gradient-to-br from-blue-600 to-indigo-500 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-600/20">
-          <svg className="w-[26px] h-[26px] fill-white" viewBox="0 0 24 24">
-            <path d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0011.5 2 1.5 1.5 0 0010 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
-          </svg>
+    <aside className="cv-sidebar border-none shadow-[20px_0_40px_rgba(0,0,0,0.02)]">
+      {/* Brand area */}
+      <div className="px-10 py-10 flex items-center gap-5">
+        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-2xl shadow-[#007BFF]/10 p-2 border border-slate-50">
+          <img src={chtLogo} alt="CHT Logo" className="w-full h-full object-contain" />
         </div>
-        <div className="leading-tight">
-          <span className="block text-[18px] font-black text-slate-900 tracking-tighter uppercase">
-            CHT Travel
-          </span>
-          <small className="text-[10px] text-slate-400 font-black uppercase tracking-[2px]">
-            Management
-          </small>
+        <div className="flex flex-col">
+          <span className="text-[18px] font-black text-slate-900 tracking-tighter leading-none">CHT Travel</span>
+          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Management System</span>
         </div>
       </div>
 
-      {/* Nav Items */}
-      <nav className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto cv-sidebar">
-        {navItems.map((item) => (
+      {/* Navigation */}
+      <nav className="flex-1 px-4 mt-8 space-y-2 overflow-y-auto no-scrollbar">
+        {items.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
-              `flex items-center gap-3.5 px-5 py-[14px] rounded-2xl transition-all group ${
-                isActive
-                  ? "bg-blue-600 text-white font-black shadow-xl shadow-blue-600/20"
-                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+              `flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-400 group ${
+                isActive ? "bg-[#007BFF] text-white shadow-xl shadow-[#007BFF]/20" : "text-slate-400 hover:text-slate-900 hover:bg-slate-50"
               }`
             }
           >
             {({ isActive }) => (
               <>
                 <svg
-                  className={`w-5 h-5 fill-current ${isActive ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`}
+                  className={`w-5 h-5 fill-none stroke-current transition-colors ${isActive ? "text-white stroke-[2.5]" : "text-slate-300 group-hover:text-slate-900 stroke-2"}`}
                   viewBox="0 0 24 24"
                 >
-                  <path d={item.icon} />
+                  <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
                 </svg>
-                <span className="text-[14px] font-bold tracking-tight">
+                <span className={`text-[14px] font-bold tracking-tight ${isActive ? "font-black" : ""}`}>
                   {item.name}
                 </span>
               </>
@@ -127,19 +74,14 @@ export default function Sidebar({ role }) {
         ))}
       </nav>
 
-      {/* Sidebar Footer */}
-      <div className="p-6 border-t border-slate-50 bg-slate-50/30">
+      {/* Footer */}
+      <div className="p-8 mt-auto">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3.5 px-6 py-4 text-[14px] font-black text-red-500 hover:bg-white hover:shadow-md rounded-2xl transition-all cursor-pointer group"
+          className="w-full flex items-center gap-4 px-6 py-4 text-[12px] font-black uppercase tracking-[2px] rounded-2xl transition-all cursor-pointer text-slate-300 hover:bg-red-50 hover:text-red-500 group"
         >
-          <svg
-            className="w-5 h-5 fill-current opacity-80 group-hover:opacity-100"
-            viewBox="0 0 24 24"
-          >
-            <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4a2 2 0 00-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
-          </svg>
-          Logout
+          <svg className="w-5 h-5 fill-none stroke-current stroke-2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+          Sign Out
         </button>
       </div>
     </aside>

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import api from "../../../api/axios";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export default function Step4({ bookingData, updateData }) {
   const [hotels, setHotels] = useState([]);
@@ -21,96 +23,89 @@ export default function Step4({ bookingData, updateData }) {
 
   const selectHotel = (hotel) => {
     updateData({
-      hotelId: hotel.hotelId,
-      hotelName: hotel.Name,
+      hotelId: hotel.accommodationId || hotel.AccommodationID,
+      hotelName: hotel.Name || hotel.name,
     });
   };
 
-  if (loading)
-    return (
-      <div className="py-20 text-center text-slate-400 font-medium">
-        Loading hotels...
-      </div>
-    );
-
   return (
-    <div className="space-y-6 animate-[fadeIn_0.4s_ease-out]">
+    <div className="space-y-10 animate-fade-in pb-12">
       <div className="text-left">
-        <h2 className="text-2xl font-bold text-slate-800 tracking-tight">
+        <h2 className="text-[32px] font-black text-slate-900 tracking-tight leading-none mb-4">
           Select Hotel
         </h2>
-        <p className="text-slate-500 mt-1">
-          Choose from our curated list of partner hotels and resorts.
+        <p className="text-slate-500 text-[16px] font-medium tracking-tight">
+          Select a hotel for the traveler's stay.
         </p>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-[32px] overflow-hidden shadow-sm">
-        <div className="divide-y divide-slate-100">
-          {hotels.map((hotel) => {
-            const isSelected = bookingData.hotelId === hotel.hotelId;
-            return (
-              <div
-                key={hotel.hotelId}
-                onClick={() => selectHotel(hotel)}
-                className={`p-6 flex items-center justify-between transition-all cursor-pointer group ${
-                  isSelected ? "bg-blue-50/50" : "hover:bg-slate-50/50"
-                }`}
-              >
-                <div className="flex items-center gap-6">
-                  <div
-                    className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl shadow-sm border ${
-                      isSelected
-                        ? "bg-blue-600 text-white border-blue-600"
-                        : "bg-white text-slate-400 border-slate-100 group-hover:border-blue-200 group-hover:text-blue-600"
-                    }`}
-                  >
-                    🏨
-                  </div>
-                  <div>
-                    <h3
-                      className={`text-[17px] font-bold tracking-tight transition-colors ${
-                        isSelected
-                          ? "text-blue-700"
-                          : "text-slate-800 group-hover:text-blue-600"
-                      }`}
-                    >
-                      {hotel.Name}
-                    </h3>
-                    <div className="flex items-center gap-3 mt-1">
-                      <span className="text-[12px] text-slate-400 flex items-center gap-1">
-                        📍 {hotel.Location || "Various Locations"}
-                      </span>
-                      <span className="w-1 h-1 bg-slate-200 rounded-full" />
-                      <span className="text-[12px] text-blue-500 font-bold uppercase tracking-wider">
-                        Partner Hotel
-                      </span>
+      <Card className="border-slate-100 rounded-[2rem] shadow-sm overflow-hidden">
+        <div className="divide-y divide-slate-50">
+          {loading ? (
+            [1, 2, 3].map((i) => (
+              <div key={i} className="p-10 h-28 bg-white animate-pulse" />
+            ))
+          ) : hotels.length === 0 ? (
+            <div className="p-20 text-center uppercase tracking-[8px] font-black text-slate-200 text-[12px]">
+              No hotels discovered
+            </div>
+          ) : (
+            hotels.map((hotel) => {
+              const hotelId = hotel.accommodationId || hotel.AccommodationID;
+              const isSelected = bookingData.hotelId === hotelId;
+              return (
+                <div
+                  key={hotelId}
+                  onClick={() => selectHotel(hotel)}
+                  className={`p-10 flex flex-col md:flex-row items-center justify-between gap-8 group cursor-pointer transition-all ${
+                    isSelected ? "bg-primary/5" : "hover:bg-slate-50/50"
+                  }`}
+                >
+                  <div className="flex items-center gap-8 flex-1 min-w-0">
+                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-2xl transition-all ${
+                      isSelected ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "bg-slate-50 text-slate-400 group-hover:bg-blue-50 group-hover:text-primary"
+                    }`}>
+                      🏨
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h4 className={`text-[20px] font-black tracking-tight leading-none mb-3 transition-colors truncate block ${
+                        isSelected ? "text-primary" : "text-slate-900 group-hover:text-primary"
+                      }`} title={hotel.Name || hotel.name}>
+                        {hotel.Name || hotel.name}
+                      </h4>
+                      <div className="flex flex-wrap items-center gap-4">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <svg className="w-4 h-4 text-slate-300 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                          <span className="text-[13px] text-slate-400 font-bold group-hover:text-slate-900 transition-colors truncate block" title={hotel.Address || "Location Not Set"}>
+                            {hotel.Address || "Location Not Set"}
+                          </span>
+                        </div>
+                        <span className="text-[9px] font-black text-primary uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-lg border border-blue-100 whitespace-nowrap">
+                           Verified
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-5">
-                  {isSelected && (
-                    <span className="px-4 py-1.5 bg-blue-600 text-white text-[11px] font-black rounded-full uppercase tracking-widest shadow-lg shadow-blue-600/20">
-                      Selected
-                    </span>
-                  )}
-                  <div
-                    className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
-                      isSelected
-                        ? "border-blue-600 bg-blue-600 text-white"
-                        : "border-slate-200 bg-white group-hover:border-blue-300"
-                    }`}
-                  >
-                    {isSelected && (
-                      <span className="text-[10px] font-black">✓</span>
-                    )}
+                  <div className="flex items-center gap-6 mt-6 md:mt-0">
+                    <Button
+                      variant={isSelected ? "default" : "secondary"}
+                      className={`h-12 px-8 rounded-[0.75rem] text-[12px] font-black uppercase tracking-widest transition-all
+                        ${
+                          isSelected
+                            ? "shadow-lg shadow-primary/20"
+                            : "text-slate-400 group-hover:bg-primary group-hover:text-primary-foreground shadow-sm"
+                        }`}
+                    >
+                      {isSelected ? "Selected" : "Select"}
+                    </Button>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

@@ -16,8 +16,10 @@ exports.getDashboardSummary = async (req, res) => {
     const totalBookings = await Booking.count();
     const totalClients = await Client.count();
     const totalPackages = await Package.count({ where: { IsActive: true } });
+    const totalEmployees = await Employee.count({ where: { IsActive: true } });
 
     const revenueResult = await Payment.findOne({
+
       attributes: [
         [fn("COALESCE", fn("SUM", col("Amount")), 0), "totalRevenue"],
       ],

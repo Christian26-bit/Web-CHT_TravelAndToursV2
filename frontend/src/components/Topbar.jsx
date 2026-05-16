@@ -12,46 +12,40 @@ export default function Topbar() {
       .substring(0, 2) || "AD";
 
   return (
-    <header className="sticky top-0 z-40 flex items-center justify-between px-10 py-5 bg-white/80 backdrop-blur-xl border-b border-slate-100/50 shadow-[0_2px_15px_rgba(0,0,0,0.02)]">
-      {/* Search Box */}
-      <div className="relative flex-1 max-w-[440px]">
-        <svg
-          className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 fill-slate-400 group-focus-within:fill-blue-600 transition-colors"
-          viewBox="0 0 24 24"
-        >
-          <path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-        </svg>
-        <input
-          type="text"
-          placeholder="Search everything..."
-          className="w-full py-3.5 pl-14 pr-6 bg-slate-50/50 border border-transparent rounded-2xl text-[14px] font-medium text-slate-900 outline-none transition-all focus:border-blue-200 focus:bg-white focus:shadow-lg focus:shadow-blue-600/5 placeholder:text-slate-400"
-        />
-      </div>
-
-      {/* Right side */}
-      <div className="flex items-center gap-6">
-        {/* Notification Bell */}
-        <button className="relative p-3 rounded-2xl bg-slate-50/50 hover:bg-white hover:shadow-md transition-all cursor-pointer group flex-shrink-0 border border-transparent hover:border-slate-100">
+    <header className="cv-topbar border-none shadow-[0_1px_40px_rgba(0,0,0,0.01)]">
+      {/* Search area */}
+      <div className="flex-1 flex items-center">
+        <div className="relative w-full max-w-[600px] group">
           <svg
-            className="w-5 h-5 fill-slate-500 group-hover:fill-blue-600 transition-colors"
+            className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-[#007BFF] transition-colors"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
             viewBox="0 0 24 24"
           >
-            <path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 002 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
           </svg>
-          <span className="absolute top-3.5 right-3.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+          <input
+            type="text"
+            placeholder="Search bookings, tours, customers..."
+            className="w-full h-14 pl-16 pr-6 rounded-2xl border border-slate-100 bg-slate-50/50 text-[14px] font-medium text-slate-900 outline-none focus:bg-white focus:border-[#007BFF] focus:shadow-[0_0_0_4px_rgba(0,123,255,0.05)] transition-all"
+          />
+        </div>
+      </div>
+
+      {/* Right side controls */}
+      <div className="flex items-center gap-8">
+        {/* Notifications */}
+        <button className="relative w-12 h-12 flex items-center justify-center rounded-2xl text-slate-400 hover:text-[#007BFF] hover:bg-slate-50 transition-all cursor-pointer">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+          </svg>
+          <span className="absolute top-3 right-3 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white" />
         </button>
 
-        {/* User Profile */}
-        <div className="flex items-center gap-3 pl-6 border-l border-slate-100">
-          <div className="text-right hidden sm:block">
-            <p className="text-[13px] font-black text-slate-900 leading-none">
-              {user?.name || "Administrator"}
-            </p>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">
-              Active Session
-            </p>
-          </div>
-          <div className="w-[44px] h-[44px] rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-500 text-white flex items-center justify-center text-[14px] font-black cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-lg shadow-blue-600/20">
+        {/* User profile */}
+        <div className="flex items-center gap-4 group cursor-pointer">
+          <div className="w-14 h-14 rounded-2xl bg-[#007BFF] text-white flex items-center justify-center text-[16px] font-black shadow-xl shadow-[#007BFF]/20 group-hover:scale-105 active:scale-95 transition-all">
             {initials}
           </div>
         </div>

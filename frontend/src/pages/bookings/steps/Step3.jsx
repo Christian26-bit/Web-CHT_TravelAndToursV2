@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Card } from "@/components/ui/card";
 
 export default function Step3({ bookingData, updateData }) {
   const [addons, setAddons] = useState([]);
@@ -8,27 +9,27 @@ export default function Step3({ bookingData, updateData }) {
       setAddons([
         {
           id: 1,
-          name: "Travel Insurance",
+          name: "Premium Travel Insurance",
           price: 500,
-          description: "Comprehensive coverage for your trip.",
+          description: "Global medical and theft protection for your entire journey.",
         },
         {
           id: 2,
-          name: "Airport Lounge Access",
+          name: "Elite Airport Lounge",
           price: 1200,
-          description: "Relax in comfort before your flight.",
+          description: "Exclusive access to catering and refreshments at airport hubs.",
         },
         {
           id: 3,
           name: "Late Check-out",
           price: 800,
-          description: "Extend your stay until 4 PM.",
+          description: "Keep your hotel room until 6:00 PM on your final day.",
         },
         {
           id: 4,
-          name: "Guided City Tour",
+          name: "Private Tour Guide",
           price: 1500,
-          description: "4-hour professional guided tour.",
+          description: "Personal professional guide for a deep-dive regional experience.",
         },
       ]);
     });
@@ -45,37 +46,26 @@ export default function Step3({ bookingData, updateData }) {
       newAddons = [...selectedAddons, addon];
     }
 
-    const addonsTotal = newAddons.reduce((sum, a) => sum + a.price, 0);
-    const packageTotal =
-      (bookingData.packagePrice || 0) * (bookingData.pax || 1);
-
     updateData({
       selectedAddons: newAddons,
-      totalAmount: packageTotal + addonsTotal,
     });
   };
 
   return (
-    <div className="space-y-6 animate-[fadeIn_0.4s_ease-out]">
+    <div className="space-y-10 animate-fade-in pb-12">
       <div className="text-left">
-        <h2 className="text-2xl font-bold text-slate-800 tracking-tight">
-          Customize Your Trip
+        <h2 className="text-[32px] font-black text-slate-900 tracking-tight leading-none mb-4">
+          Add-ons
         </h2>
-        <p className="text-slate-500 mt-1">
-          Add optional services to enhance your travel experience.
+        <p className="text-slate-500 text-[16px] font-medium tracking-tight">
+          Enhance your trip with extra services and insurance.
         </p>
       </div>
 
-      {/* Add-ons Selection */}
-      <div className="bg-white border border-slate-200 rounded-[32px] p-8 shadow-sm">
-        <h3 className="text-[15px] font-bold text-slate-800 mb-6 flex items-center gap-2">
-          <span className="w-6 h-6 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-[12px]">
-            ✨
-          </span>
-          Available Add-ons
-        </h3>
-
-        <div className="space-y-3">
+      {/* Available Services */}
+      <Card className="p-10 shadow-sm relative overflow-hidden border-slate-100 rounded-[2rem]">
+        <h3 className="text-[14px] font-black text-slate-900 mb-8 uppercase tracking-widest">Available Services</h3>
+        <div className="space-y-4">
           {addons.map((addon) => {
             const isSelected = (bookingData.selectedAddons || []).find(
               (a) => a.id === addon.id,
@@ -84,67 +74,63 @@ export default function Step3({ bookingData, updateData }) {
               <div
                 key={addon.id}
                 onClick={() => toggleAddon(addon)}
-                className={`flex items-center justify-between p-5 rounded-2xl border-2 transition-all cursor-pointer ${
+                className={`flex items-center justify-between p-6 rounded-[1.5rem] border-2 transition-all duration-300 cursor-pointer group relative overflow-hidden ${
                   isSelected
-                    ? "border-blue-600 bg-blue-50/30 shadow-sm"
-                    : "border-slate-100 hover:border-slate-200"
+                    ? "border-primary bg-primary/5 shadow-lg shadow-primary/10"
+                    : "border-slate-50 hover:border-slate-200 bg-white"
                 }`}
               >
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-6 relative z-10">
                   <div
-                    className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all ${
+                    className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center transition-all ${
                       isSelected
-                        ? "bg-blue-600 border-blue-600 text-white"
-                        : "border-slate-200 bg-white"
+                        ? "bg-primary border-transparent text-primary-foreground shadow-md shadow-primary/20"
+                        : "border-slate-200 bg-white group-hover:border-primary"
                     }`}
                   >
                     {isSelected && (
-                      <span className="text-[10px] font-black">✓</span>
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                     )}
                   </div>
                   <div>
-                    <p className="text-[15px] font-bold text-slate-800">
+                    <p className={`text-[16px] font-black tracking-tight transition-colors ${isSelected ? "text-primary" : "text-slate-900"}`}>
                       {addon.name}
                     </p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-[13px] font-medium text-slate-400 mt-1 max-w-md">
                       {addon.description}
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-[16px] font-black text-slate-900">
+                <div className="text-right relative z-10">
+                  <p className="text-[20px] font-black text-slate-900 tracking-tight">
                     ₱{addon.price.toLocaleString()}
                   </p>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    per booking
+                  <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mt-1">
+                    Price
                   </p>
                 </div>
               </div>
             );
           })}
         </div>
-      </div>
+      </Card>
 
       {/* Special Requests */}
-      <div className="bg-white border border-slate-200 rounded-[32px] p-8 shadow-sm">
-        <h3 className="text-[15px] font-bold text-slate-800 mb-2 flex items-center gap-2">
-          <span className="w-6 h-6 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-[12px]">
-            📝
-          </span>
-          Special Requests
-        </h3>
-        <p className="text-[13px] text-slate-400 mb-5 ml-8">
-          Let us know about any dietary restrictions, allergies, or special
-          needs.
+      <Card className="p-10 shadow-sm border-slate-100 rounded-[2rem]">
+        <h3 className="text-[16px] font-black text-slate-900 mb-2">Special Requests</h3>
+        <p className="text-[13px] font-bold text-slate-400 uppercase tracking-widest mb-8">
+          Let us know about any special requirements or instructions.
         </p>
-        <textarea
-          value={bookingData.specialRequests || ""}
-          onChange={(e) => updateData({ specialRequests: e.target.value })}
-          placeholder="Type your special requests here..."
-          rows="5"
-          className="w-full p-6 rounded-2xl border border-slate-200 bg-slate-50/50 text-slate-700 text-[15px] outline-none focus:border-blue-500 focus:bg-white transition-all placeholder:text-slate-300"
-        />
-      </div>
+        <div className="relative">
+           <textarea
+             value={bookingData.specialRequests || ""}
+             onChange={(e) => updateData({ specialRequests: e.target.value })}
+             placeholder="Enter any dietary constraints, mobility requirements, or special instructions..."
+             rows="5"
+             className="w-full p-8 rounded-[1.5rem] border border-slate-100 bg-slate-50/50 text-slate-900 text-[15px] font-bold outline-none focus:border-primary focus:bg-white transition-all placeholder:text-slate-300 shadow-inner resize-none"
+           />
+        </div>
+      </Card>
     </div>
   );
 }

@@ -1,12 +1,20 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import Topbar from './Topbar';
 
 export default function Layout({ role }) {
   return (
-    <div className="flex min-h-screen bg-[#f8fafc] overflow-x-hidden">
+    <div className="flex min-h-screen bg-[#F0F1F1]">
+      {/* Fixed Sidebar */}
       <Sidebar role={role} />
-      <div className="flex-1 ml-[260px] min-w-0">
-        <main className="w-full">
+
+      {/* Content Area Shell */}
+      <div className="cv-content-shell">
+        {/* Sticky Topbar */}
+        <Topbar />
+
+        {/* Dynamic Page Content */}
+        <main className="cv-page-area">
           <Outlet />
         </main>
       </div>
