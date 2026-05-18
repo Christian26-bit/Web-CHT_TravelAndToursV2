@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContextInstance";
+import { Mail, Lock } from "lucide-react";
 import api from "../api/axios";
 import chtLogo from "../assets/cht-logo.png";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const emailId = useId();
+  const passwordId = useId();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [message, setMessage] = useState({ type: "", text: "" });
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -17,90 +20,188 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email.trim() || !password) {
-      setMessage({ type: "error", text: "Please enter your email and password." });
+    if (!formData.email.trim() || !formData.password) {
+      setMessage({
+        type: "error",
+        text: "Please enter your email and password.",
+      });
       return;
     }
     setLoading(true);
     try {
-      const res = await api.post("/login", { email: email.trim(), password });
+      const res = await api.post("/login", {
+        email: formData.email.trim(),
+        password: formData.password,
+      });
       if (res.data.success) {
-        login(res.data.token, { name: res.data.name, email: res.data.email, role: res.data.role });
-        setMessage({ type: "success", text: "Login successful. Redirecting..." });
+        login(res.data.token, {
+          name: res.data.name,
+          email: res.data.email,
+          role: res.data.role,
+        });
+        setMessage({
+          type: "success",
+          text: "Login successful. Redirecting...",
+        });
         setTimeout(() => {
           if (res.data.role === "admin") navigate("/admin/dashboard");
           else navigate("/user/dashboard");
         }, 800);
       }
     } catch (err) {
-      setMessage({ type: "error", text: err.response?.data?.error || "Invalid credentials. Please try again." });
+      setMessage({
+        type: "error",
+        text:
+          err.response?.data?.error || "Invalid credentials. Please try again.",
+      });
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] font-inter relative overflow-hidden">
-      {/* Premium background blobs */}
-      <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-50 rounded-full blur-[100px] animate-pulse" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-50 rounded-full blur-[80px]" />
-
-      <Card className="w-full max-w-[460px] shadow-[0_40px_100px_rgba(0,123,255,0.06)] border border-slate-50 relative z-10 mx-6 animate-fade-in">
-        <CardHeader className="flex flex-col items-center text-center pt-12 pb-8">
-          <div className="w-28 h-16 mb-6 flex items-center justify-center">
-            <img src={chtLogo} alt="CHT Travel" className="w-full h-full object-contain" />
+    <main className="bg-[#F0F1F1] w-full min-h-screen flex flex-col items-center justify-center relative overflow-hidden p-6">
+      <section
+        className="w-full max-w-[491px] flex flex-col gap-8 relative z-10"
+        aria-labelledby="login-title"
+      >
+        <div className="flex w-full relative flex-col items-center p-[33px] bg-white rounded-[32px] border border-solid border-slate-100/50 shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
+          {/* Logo Section */}
+          <div className="flex flex-col w-full items-center mb-8">
+            <div className="relative w-full h-[120px] flex justify-center items-center">
+              <img
+                className="w-[285px] h-[120px] object-contain"
+                alt="CHT Travel and Tours"
+                src={chtLogo}
+              />
+            </div>
           </div>
-          <CardTitle className="text-[32px] font-black text-slate-900 tracking-tight leading-none mb-2">Login</CardTitle>
-          <CardDescription className="text-[14px] font-medium text-slate-500">Welcome back, please login to your account.</CardDescription>
-        </CardHeader>
 
-        <CardContent className="px-12 pb-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Address</label>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@example.com"
-                className="h-14 px-6 bg-slate-50 border-slate-100 text-[14px] font-bold text-slate-900 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary transition-all placeholder:text-slate-300"
-              />
+          <form className="w-full flex flex-col gap-6" onSubmit={handleSubmit}>
+            {/* Email Field */}
+            <div className="flex flex-col w-full items-start gap-1">
+              <label
+                className="font-bold text-[13px] text-slate-800 tracking-wide uppercase"
+                htmlFor={emailId}
+              >
+                Email Address
+              </label>
+              <div className="cv-input-group">
+                <Mail className="cv-input-icon" />
+                <input
+                  className="cv-input"
+                  id={emailId}
+                  name="email"
+                  placeholder="Enter your email"
+                  type="email"
+                  autoComplete="email"
+                  aria-label="Email Address"
+                  value={formData.email}
+                  onChange={(event) =>
+                    setFormData((previous) => ({
+                      ...previous,
+                      email: event.target.value,
+                    }))
+                  }
+                />
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Password</label>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="h-14 px-6 bg-slate-50 border-slate-100 text-[14px] font-bold text-slate-900 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary transition-all placeholder:text-slate-300"
-              />
+            {/* Password Field */}
+            <div className="flex flex-col w-full items-start gap-1">
+              <label
+                className="font-bold text-[13px] text-slate-800 tracking-wide uppercase"
+                htmlFor={passwordId}
+              >
+                Password
+              </label>
+              <div className="cv-input-group">
+                <Lock className="cv-input-icon" />
+                <input
+                  className="cv-input"
+                  id={passwordId}
+                  name="password"
+                  placeholder="Enter your password"
+                  type="password"
+                  autoComplete="current-password"
+                  aria-label="Password"
+                  value={formData.password}
+                  onChange={(event) =>
+                    setFormData((previous) => ({
+                      ...previous,
+                      password: event.target.value,
+                    }))
+                  }
+                />
+              </div>
             </div>
 
+            {/* Feedback Message */}
             {message.text && (
-              <div className={`p-4 rounded-xl text-[12px] font-bold text-center animate-fade-in ${
-                message.type === "error" ? "bg-destructive/10 text-destructive" : "bg-primary/10 text-primary"
-              }`}>
+              <div
+                className={`p-4 rounded-2xl text-[13px] font-semibold text-center border ${
+                  message.type === "error"
+                    ? "bg-red-50/80 text-red-600 border-red-100"
+                    : "bg-emerald-50/80 text-emerald-600 border-emerald-100"
+                }`}
+              >
                 {message.text}
               </div>
             )}
 
-            <div className="pt-4">
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full h-16 text-[13px] font-black uppercase tracking-widest hover:-translate-y-0.5 transition-all shadow-lg shadow-primary/20 active:scale-95"
+            {/* Forgot Password */}
+            <div className="flex justify-end w-full">
+              <button
+                type="button"
+                className="text-[13px] font-bold text-[#007BFF] hover:text-[#0059BC] transition-colors cursor-pointer hover:underline"
               >
-                {loading ? "Loading..." : "Login"}
-              </Button>
+                Forgot Password?
+              </button>
             </div>
-          </form>
-        </CardContent>
 
-        <CardFooter className="justify-center pb-12 pt-4">
-          <p className="text-[10px] font-black text-slate-300 uppercase tracking-[4px]">CHT Travel & Tours</p>
-        </CardFooter>
-      </Card>
-    </div>
+            {/* Submit Button */}
+            <button
+              className="cv-btn-primary w-full cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed mt-2"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  LOGGING IN...
+                </span>
+              ) : (
+                "LOGIN"
+              )}
+            </button>
+          </form>
+        </div>
+
+        {/* Footer Text */}
+        <div className="flex w-full items-center justify-center">
+          <p className="font-semibold text-slate-500 text-sm text-center tracking-wide">
+            Travel with confidence, manage with ease
+          </p>
+        </div>
+      </section>
+    </main>
   );
 }

@@ -7,15 +7,12 @@ import Step4 from "./steps/Step4";
 import Step5 from "./steps/Step5";
 import Step6 from "./steps/Step6";
 import { useAuth } from "../../context/AuthContextInstance";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 export default function BookingWizard() {
   const { step } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
   const currentStep = parseInt(step) || 1;
-  const totalSteps = 6;
   const dashboardPath = user?.role === "admin" ? "/admin/dashboard" : "/user/dashboard";
 
   const [bookingData, setBookingData] = useState({
@@ -31,6 +28,7 @@ export default function BookingWizard() {
     packageId: null,
     packageName: "",
     packagePrice: 0,
+    destination: "",
     flightId: null,
     flightNumber: "",
     airline: "",
@@ -54,132 +52,121 @@ export default function BookingWizard() {
     });
   };
 
-  const stepLabels = ["Traveler", "Trip & Flight", "Add-ons", "Hotel", "Transport", "Review"];
+  const stepLabels = [
+    "Customer Info",
+    "Package Selection",
+    "Customization",
+    "Hotel Selection",
+    "Transportation",
+    "Payment & Confirm"
+  ];
 
   const renderStep = () => {
     switch (currentStep) {
-      case 1: return <Step1 bookingData={bookingData} updateData={updateData} />;
-      case 2: return <Step2 bookingData={bookingData} updateData={updateData} />;
-      case 3: return <Step3 bookingData={bookingData} updateData={updateData} />;
-      case 4: return <Step4 bookingData={bookingData} updateData={updateData} />;
-      case 5: return <Step5 bookingData={bookingData} updateData={updateData} />;
-      case 6: return <Step6 bookingData={bookingData} updateData={updateData} />;
-      default: return <div className="py-40 text-center animate-pulse text-slate-400 font-black uppercase tracking-widest">Loading Step...</div>;
+      case 1: return <Step1 bookingData={bookingData} updateData={updateData} onBack={() => navigate(dashboardPath)} onNext={() => navigate(`/bookings/step/2`)} />;
+      case 2: return <Step2 bookingData={bookingData} updateData={updateData} onBack={() => navigate(`/bookings/step/1`)} onNext={() => navigate(`/bookings/step/3`)} />;
+      case 3: return <Step3 bookingData={bookingData} updateData={updateData} onBack={() => navigate(`/bookings/step/2`)} onNext={() => navigate(`/bookings/step/4`)} />;
+      case 4: return <Step4 bookingData={bookingData} updateData={updateData} onBack={() => navigate(`/bookings/step/3`)} onNext={() => navigate(`/bookings/step/5`)} />;
+      case 5: return <Step5 bookingData={bookingData} updateData={updateData} onBack={() => navigate(`/bookings/step/4`)} onNext={() => navigate(`/bookings/step/6`)} />;
+      case 6: return <Step6 bookingData={bookingData} updateData={updateData} onBack={() => navigate(`/bookings/step/5`)} onNext={() => navigate(dashboardPath)} />;
+      default: return <div className="py-40 text-center animate-pulse text-slate-400 font-semibold uppercase tracking-widest">Loading Step...</div>;
     }
   };
 
+  const completedSteps = Math.min(4, Math.max(0, currentStep - 1));
+  const completionPercentage = (completedSteps / 4) * 100;
+
   return (
-    <div className="cv-main-container animate-fade-in pb-32">
-      
-      {/* Stepper Navigation */}
-      <Card className="p-8 mb-12 shadow-sm border-slate-100 rounded-[2rem]">
-        <div className="flex justify-between items-center relative px-6">
-          <div className="absolute top-[16px] left-12 right-12 h-[1.5px] bg-slate-100 z-0" />
-          <div 
-            className="absolute top-[16px] left-12 h-[1.5px] bg-primary z-0 transition-all duration-700 ease-in-out" 
-            style={{ width: `calc(${((currentStep - 1) / (totalSteps - 1)) * 100}% - 3rem)` }}
-          />
+    <div className="flex flex-col w-full min-h-screen bg-[#f8fafc] p-8 pb-20 font-['Arimo-Regular',Helvetica] select-none">
+      <div className="flex items-center justify-between h-[100px] max-w-full bg-white border border-[#e2e8f0] px-8 py-6 rounded-[12px] shadow-sm">
+        {stepLabels.map((label, i) => {
+          const stepNum = i + 1;
+          const isActive = stepNum === currentStep;
+          const isCompleted = stepNum < currentStep;
 
-          {stepLabels.map((label, i) => {
-            const stepNum = i + 1;
-            const isActive = stepNum === currentStep;
-            const isCompleted = stepNum < currentStep;
-
-            return (
-              <div key={label} className="relative z-10 flex flex-col items-center gap-3">
+          return (
+            <div key={label} className="flex flex-col items-center flex-1 relative">
+              <div className="flex items-center w-full">
+                <div className={`flex-1 h-[3px] rounded-full ${i === 0 ? "bg-transparent" : (isCompleted || isActive ? "bg-[#007bff]" : "bg-[#f1f5f9]")} transition-all duration-500`} />
+                
                 <div 
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-[12px] font-black border-2 border-white shadow-sm transition-all duration-500 ${
-                    isActive ? "bg-primary text-primary-foreground scale-125 shadow-xl shadow-primary/20" : 
-                    isCompleted ? "bg-primary text-primary-foreground" : 
-                    "bg-slate-100 text-slate-400"
+                  className={`flex items-center justify-center w-[40px] h-[40px] rounded-full transition-all duration-300 font-['Arimo-Regular',Helvetica] text-[14px] font-semibold z-10 shrink-0 ${
+                    isActive ? "bg-[#007bff] text-white shadow-[0_0_0_4px_rgba(0,123,255,0.15)]" : 
+                    isCompleted ? "bg-[#007bff] text-white" : 
+                    "bg-[#f1f5f9] text-[#64748b]"
                   }`}
                 >
-                  {isCompleted ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> : stepNum}
+                  {stepNum}
                 </div>
-                <span className={`text-[10px] font-black uppercase tracking-widest transition-colors ${isActive ? "text-primary" : "text-slate-300"}`}>
-                  {label}
-                </span>
+                
+                <div className={`flex-1 h-[3px] rounded-full ${i === stepLabels.length - 1 ? "bg-transparent" : (isCompleted ? "bg-[#007bff]" : "bg-[#f1f5f9]")} transition-all duration-500`} />
               </div>
-            );
-          })}
-        </div>
-      </Card>
+              <span className={`font-['Arimo-Regular',Helvetica] text-[11px] font-semibold mt-[12px] whitespace-nowrap transition-colors duration-300 uppercase tracking-wider ${isActive ? "text-[#007bff]" : "text-[#94a3b8]"}`}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
 
-      <div className={`grid grid-cols-1 ${currentStep < 6 ? "lg:grid-cols-[1fr_360px]" : "max-w-[1000px] mx-auto"} gap-10 items-start`}>
-        {/* Step Content */}
-        <div className="min-h-[500px]">
+      <div className="flex items-start gap-[32px] mt-[48px] max-w-full">
+        <div className="flex-1 min-w-0">
           {renderStep()}
         </div>
 
-        {/* Summary Panel */}
-        {currentStep < 6 && (
-          <aside className="sticky top-10">
-            <Card className="overflow-hidden shadow-2xl shadow-slate-200/50 border-slate-100 rounded-[2rem]">
-              <div className="p-8 border-b border-slate-50 bg-slate-50/30">
-                <h3 className="text-[17px] font-black text-slate-900 tracking-tight">Booking Summary</h3>
-                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Review your itinerary</p>
+        {currentStep <= 6 && (
+          <aside className="w-[286px] flex-shrink-0 flex flex-col gap-[24px] border border-[#e2e8f0] rounded-[12px] bg-white shadow-sm sticky top-[97px] overflow-hidden transition-all duration-300">
+            <div className="h-[110px] flex flex-col justify-center px-[24px] bg-gradient-to-r from-[#eff6ff]/40 to-white border-b border-[#e2e8f0]">
+              <h3 className="text-[18px] font-semibold text-[#1e293b] leading-[28px] tracking-tight">Booking Summary</h3>
+              <p className="text-[12px] text-[#64748b] mt-[4px]">Live progress tracker</p>
+              <div className="inline-flex items-center justify-center border border-[#eff6ff] rounded-[8px] h-[22px] px-[8px] mt-[10px] w-fit bg-[#eff6ff]">
+                <span className="text-[11px] font-semibold text-[#007bff] uppercase tracking-wider">
+                  {Math.round(completionPercentage)}% Complete
+                </span>
               </div>
+            </div>
 
-              <div className="p-8 space-y-6">
-                {[
-                  { icon: "👤", label: "Traveler", value: bookingData.customerName },
-                  { icon: "✈️", label: "Flight", value: bookingData.airline ? `${bookingData.airline} ${bookingData.flightNumber}` : null },
-                  { icon: "🧳", label: "Package", value: bookingData.packageName },
-                  { icon: "🏨", label: "Hotel", value: bookingData.hotelName },
-                  { icon: "🚐", label: "Transport", value: bookingData.transportName },
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-4 group">
-                    <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-[20px] transition-transform group-hover:scale-110">{item.icon}</div>
-                    <div className="min-w-0">
-                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">{item.label}</p>
-                      <p className="text-[14px] font-black text-slate-900 truncate">
-                        {item.value || <span className="text-slate-200 font-medium italic">Not selected</span>}
-                      </p>
+            <div className="flex flex-col gap-[16px] p-[24px] pt-0">
+              {[
+                { label: "Customer", completed: currentStep > 1 },
+                { label: "Package", completed: currentStep > 2 },
+                { label: "Hotel", completed: currentStep > 3 },
+                { label: "Transport", completed: currentStep > 4 },
+              ].map((item, idx) => (
+                <div key={item.label} className="flex flex-col gap-[16px]">
+                  <div className="flex items-center gap-[12px]">
+                    <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-full transition-all duration-300 ${item.completed ? "bg-[#007bff] text-white shadow-sm" : "bg-[#f1f5f9] text-[#cbd5e1]"}`}>
+                      {item.completed ? (
+                        <svg className="w-[12px] h-[12px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                      ) : (
+                        <div className="w-[6px] h-[6px] rounded-full bg-[#cbd5e1]" />
+                      )}
                     </div>
+                    <span className={`text-[14px] font-medium transition-all ${item.completed ? "text-[#1e293b]" : "text-[#94a3b8]"}`}>{item.label}</span>
                   </div>
-                ))}
+                  {idx < 3 && <div className="h-[1px] bg-[#e2e8f0]/80 w-full" />}
+                </div>
+              ))}
+
+              <div className="flex items-center gap-[8px] mt-[8px] border-t border-[#e2e8f0] pt-6">
+                <span className="text-[11px] font-semibold text-[#64748b] uppercase tracking-widest">Total Cost</span>
+              </div>
+              <div className="text-[28px] font-bold text-[#007bff] text-right tracking-tight leading-none mt-2">
+                ₱{bookingData.totalAmount.toLocaleString()}
               </div>
 
-              <div className="px-8 pb-8">
-                <div className="rounded-2xl p-6 bg-primary text-primary-foreground relative overflow-hidden shadow-xl shadow-primary/20">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-10 -mt-10" />
-                  <p className="text-[11px] font-black opacity-70 uppercase tracking-widest mb-2">Total Amount</p>
-                  <p className="text-[32px] font-black leading-none tracking-tighter">
-                    ₱{bookingData.totalAmount.toLocaleString("en-PH")}
-                  </p>
+              <div className="flex flex-col gap-[8px] border-t border-[#e2e8f0] pt-[20px] mt-[8px]">
+                <div className="flex justify-between items-center h-[16px]">
+                  <span className="text-[11px] font-semibold text-[#cbd5e1] uppercase tracking-widest">Completion</span>
+                  <span className="text-[12px] font-semibold text-[#64748b]">{completedSteps} / 4</span>
+                </div>
+                <div className="w-full h-[8px] bg-[#f1f5f9] rounded-full overflow-hidden">
+                  <div className="h-full bg-[#007bff] transition-all duration-500" style={{ width: `${completionPercentage}%` }} />
                 </div>
               </div>
-            </Card>
+            </div>
           </aside>
         )}
-      </div>
-
-      {/* Navigation Buttons */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-100 p-6 flex justify-between items-center z-50 lg:left-[280px]">
-        <Button
-          variant="outline"
-          onClick={() => currentStep > 1 ? navigate(`/bookings/step/${currentStep - 1}`) : navigate(dashboardPath)}
-          className="flex items-center gap-3 h-14 px-8 rounded-[0.75rem] border-slate-200 text-[12px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all group"
-        >
-          <span className="group-hover:-translate-x-1 transition-transform">←</span>
-          {currentStep > 1 ? "Previous Step" : "Cancel"}
-        </Button>
-
-        <div className="hidden md:flex flex-col items-center gap-2">
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Step {currentStep} of {totalSteps}</span>
-          <div className="w-48 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-            <div className="h-full bg-primary transition-all duration-700 ease-out" style={{ width: `${(currentStep / totalSteps) * 100}%` }} />
-          </div>
-        </div>
-
-        <Button
-          onClick={() => currentStep < totalSteps && navigate(`/bookings/step/${currentStep + 1}`)}
-          className={`h-14 px-10 rounded-[0.75rem] text-[12px] font-black uppercase tracking-widest shadow-xl shadow-primary/20 transition-all hover:-translate-y-0.5 ${
-            currentStep === totalSteps ? "hidden" : ""
-          }`}
-        >
-          {currentStep === 1 ? "Start Booking" : "Next Step"} →
-        </Button>
       </div>
     </div>
   );

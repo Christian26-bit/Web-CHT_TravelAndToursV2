@@ -1,4 +1,4 @@
-const { Client } = require("../models");
+const { Client, Employee } = require("../models");
 const { Op } = require("sequelize");
 
 exports.listClients = async (req, res) => {
@@ -17,6 +17,13 @@ exports.listClients = async (req, res) => {
 
     const clients = await Client.findAll({
       where,
+      include: [
+        {
+          model: Employee,
+          as: "AccountManager",
+          attributes: ["Name", "Email"],
+        }
+      ],
       order: [["clientId", "DESC"]],
     });
 

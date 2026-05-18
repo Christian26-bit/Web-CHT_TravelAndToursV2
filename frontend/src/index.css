@@ -1,10 +1,16 @@
 @import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
-/* 
-  CHT TRAVEL & TOURS - FINAL SHELL FIX v2.4
-  Guaranteed Layout Stability
-*/
+@font-face {
+  font-family: 'Arimo-Regular';
+  src: local('Inter'), local('sans-serif');
+}
+
+@font-face {
+  font-family: 'Arimo-Bold';
+  src: local('Inter'), local('sans-serif');
+  font-weight: bold;
+}
 
 :root {
   --primary:        #007BFF;
@@ -18,8 +24,8 @@
   --border-light:   #F1F5F9;
   --border-std:     #E2E8F0;
   
-  --sidebar-width:  280px;
-  --topbar-height:  65px;
+  --sidebar-width:  256px;
+  --topbar-height:  105px;
   
   --radius-xl:      40px;
   --radius-lg:      32px;
@@ -27,34 +33,30 @@
   --radius-sm:      16px;
 }
 
-/* Base Reset */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { box-sizing: border-box; }
 body { font-family: "Inter", sans-serif; background: var(--bg-main); color: var(--text-primary); -webkit-font-smoothing: antialiased; }
 
-/* ============================================
-   STABLE APP SHELL
-   ============================================ */
 
 .cv-sidebar {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
-  width: 280px !important; /* Hardcoded to bypass var issues in some browsers */
+  width: 256px !important; 
   height: 100vh !important;
-  background: #FFFFFF !important;
-  border-right: 1px solid var(--border-std) !important;
+  background: #f8fafc !important;
+  border-right: 1px solid #e2e8f0 !important;
   display: flex !important;
   flex-direction: column !important;
-  z-index: 9999 !important; /* Extremely high z-index */
+  z-index: 9999 !important;
   overflow-y: auto;
 }
 
 .cv-content-shell {
-  margin-left: 280px !important;
+  margin-left: 256px !important;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  width: calc(100% - 280px) !important;
+  width: calc(100% - 256px) !important;
   position: relative;
 }
 
@@ -63,15 +65,13 @@ body { font-family: "Inter", sans-serif; background: var(--bg-main); color: var(
   top: 0 !important;
   z-index: 9000 !important;
   width: 100% !important;
-  height: 65px !important;
-  background: rgba(255, 255, 255, 0.9) !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border-light);
+  min-height: 105px !important;
+  background: #ffffff !important;
+  border-bottom: 1.111px solid #e5e7eb !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px !important;
+  padding: 16px 40px !important;
 }
 
 .cv-page-area {
@@ -82,18 +82,13 @@ body { font-family: "Inter", sans-serif; background: var(--bg-main); color: var(
   overflow-x: hidden;
 }
 
-/* ============================================
-   FIGMA TYPOGRAPHY & COMPONENTS
-   ============================================ */
 
 .cv-title-display { font-size: 36px; font-weight: 900; letter-spacing: -0.05em; line-height: 1.1; }
 .cv-title-section { font-size: 24px; font-weight: 900; letter-spacing: -0.025em; }
 .cv-metric-number { font-size: 32px; font-weight: 900; letter-spacing: -0.05em; }
 
 .cv-main-container {
-  padding: 48px;
   max-width: 1600px;
-  margin: 0 auto;
   min-height: calc(100vh - var(--topbar-height));
 }
 
@@ -121,7 +116,9 @@ body { font-family: "Inter", sans-serif; background: var(--bg-main); color: var(
 
 .cv-btn-primary {
   height: 56px;
+  width: 100%;
   padding: 0 32px;
+  box-sizing: border-box;
   background: #007BFF;
   color: #FFFFFF;
   border-radius: 16px;
@@ -134,9 +131,7 @@ body { font-family: "Inter", sans-serif; background: var(--bg-main); color: var(
   justify-content: center;
   gap: 12px;
   border: none;
-  box-shadow: 0 10px 20px -5px rgba(0, 123, 255, 0.3);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
 }
 .cv-btn-primary:hover {
@@ -151,26 +146,43 @@ body { font-family: "Inter", sans-serif; background: var(--bg-main); color: var(
 .cv-table-card { 
   background: #FFFFFF; 
   border: 1px solid var(--border-std); 
-  border-radius: 32px; 
+  border-radius: 12px; 
   overflow: hidden; 
-  box-shadow: 0 4px 20px -8px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  width: 100%;
 }
-.cv-table { width: 100%; border-collapse: collapse; }
+.cv-table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  text-align: left;
+}
 .cv-table th { 
-  background: #F8FAFC; 
-  padding: 24px 32px; 
-  text-align: left; 
-  font-size: 11px; 
-  font-weight: 900; 
-  color: var(--text-muted); 
-  text-transform: uppercase; 
-  letter-spacing: 2px; 
+  background: #FFFFFF; 
+  border-bottom: 1px solid #e2e8f0;
+  padding: 10px 8px; 
+  font-family: 'Arimo-Regular', Helvetica, sans-serif;
+  font-size: 14px; 
+  font-weight: 400; 
+  color: #1e293b; 
+  text-transform: none; 
+  letter-spacing: normal; 
   white-space: nowrap;
 }
 .cv-table td { 
-  padding: 24px 32px; 
-  border-bottom: 1px solid var(--border-light);
+  padding: 12px 8px; 
+  border-bottom: 1px solid #e2e8f0;
   vertical-align: middle;
+  font-family: 'Arimo-Regular', Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #1e293b;
+}
+.cv-table tbody tr {
+  height: 48px;
+}
+.cv-table tbody tr:hover {
+  background-color: #f8fafc;
 }
 .cv-table tr:last-child td { border-bottom: none; }
 
@@ -178,14 +190,13 @@ body { font-family: "Inter", sans-serif; background: var(--bg-main); color: var(
   width: 100%;
   height: 56px;
   padding: 0 24px;
-  background: #F8FAFC;
+  background: #FFFFFF;
   border: 1px solid #E2E8F0;
   border-radius: 16px;
   font-size: 14px;
   font-weight: 700;
   color: #1C1C1E;
   outline: none;
-  transition: all 0.3s ease;
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
 }
 .cv-input:focus {
@@ -198,7 +209,6 @@ body { font-family: "Inter", sans-serif; background: var(--bg-main); color: var(
   font-weight: 500;
 }
 
-/* Bottom Bar Fix */
 .cv-wizard-bottom-bar {
   position: fixed !important;
   bottom: 0 !important;
@@ -222,6 +232,11 @@ body { font-family: "Inter", sans-serif; background: var(--bg-main); color: var(
   width: 100%;
 }
 
+.cv-input-group .cv-input {
+  padding-left: 52px;
+}
+
+
 .cv-input-icon {
   position: absolute;
   left: 20px;
@@ -238,25 +253,14 @@ body { font-family: "Inter", sans-serif; background: var(--bg-main); color: var(
   color: #007BFF;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; border: 2px solid var(--bg-main); }
 ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
-.animate-fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-.animate-slide-up { animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-@keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Grid Fixes for Clipping */
-.grid {
-  display: grid;
-  gap: 2rem;
-}
 
-/* Card Content Protection */
 .card-content-protected {
   display: flex;
   flex-direction: column;
@@ -266,12 +270,12 @@ body { font-family: "Inter", sans-serif; background: var(--bg-main); color: var(
 .card-title-protected {
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Scrollbar Utilities */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -280,19 +284,9 @@ body { font-family: "Inter", sans-serif; background: var(--bg-main); color: var(
   scrollbar-width: none;
 }
 
-/* Table Protection */
-.cv-table-card {
-  position: relative;
-  background: #FFFFFF;
-  border: 1px solid var(--border-std);
-  border-radius: 32px;
-  box-shadow: 0 4px 20px -8px rgba(0,0,0,0.05);
-  width: 100%;
-}
-
 .cv-table-container {
   overflow-x: auto;
-  border-radius: 32px;
+  border-radius: 12px;
 }
 
 @theme inline {
@@ -372,5 +366,85 @@ body { font-family: "Inter", sans-serif; background: var(--bg-main); color: var(
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .all-\[unset\] {
+    all: unset;
+  }
+}
+
+:root {
+  --animate-spin: spin 1s linear infinite;
+}
+
+
+
+.animate-marquee {
+  animation: marquee var(--duration) infinite linear;
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical var(--duration) linear infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 8s infinite;
+}
+
+.animate-spin {
+  animation: var(--animate-spin);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes image-glow {
+  0% {
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.74, 0.25, 0.76, 1);
+  }
+  10% {
+    opacity: 0.7;
+    animation-timing-function: cubic-bezier(0.12, 0.01, 0.08, 0.99);
+  }
+  to {
+    opacity: 0.4;
+  }
+}
+
+
+
+@keyframes shimmer {
+  0%,
+  90%,
+  to {
+    background-position: calc(-100% - var(--shimmer-width)) 0;
+  }
+  30%,
+  60% {
+    background-position: calc(100% + var(--shimmer-width)) 0;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+@keyframes marquee-vertical {
+  0% {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
   }
 }

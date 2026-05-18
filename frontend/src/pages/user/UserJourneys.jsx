@@ -46,7 +46,6 @@ export default function UserJourneys() {
 
   return (
     <div className="cv-main-container animate-fade-in pb-20">
-      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 mb-16">
         <div>
           <h1 className="cv-title-display text-slate-900 mb-4">Client Lifecycle</h1>
@@ -64,7 +63,6 @@ export default function UserJourneys() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        {/* Sidebar: Active Journeys */}
         <div className="lg:col-span-4 space-y-6">
           <div className="relative group">
             <svg className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-[#007BFF] transition-colors" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
@@ -103,7 +101,6 @@ export default function UserJourneys() {
           </div>
         </div>
 
-        {/* Detail: Lifecycle Tracking */}
         <div className="lg:col-span-8">
           {selectedBooking ? (
             <div className="bg-white rounded-[48px] border border-slate-200 shadow-2xl shadow-slate-200/40 p-12 min-h-[700px] animate-fade-in relative overflow-hidden">

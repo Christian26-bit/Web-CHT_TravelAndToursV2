@@ -9,28 +9,28 @@ module.exports = {
         Type: 'Bus',
         Capacity: 40,
         PlateNumber: 'HOK-1234',
-        ProviderName: 'Hokkaido Tours Co.'
+        ProviderName: 'Hokkaido Tours Co. (Japan)'
       },
       {
         VehicleID: 2,
         Type: 'Bus',
         Capacity: 45,
         PlateNumber: 'HK-5678',
-        ProviderName: 'Hong Kong Coaches'
+        ProviderName: 'Hong Kong Coaches (China)'
       },
       {
         VehicleID: 3,
         Type: 'Bus',
         Capacity: 35,
         PlateNumber: 'BALI-009',
-        ProviderName: 'Bali Transport'
+        ProviderName: 'Bali Transport (Indonesia)'
       },
       {
         VehicleID: 4,
         Type: 'Bus',
         Capacity: 40,
         PlateNumber: 'TPE-2026',
-        ProviderName: 'Taiwan Coaches'
+        ProviderName: 'Taiwan Coaches (Taiwan)'
       },
       {
         VehicleID: 5,

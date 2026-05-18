@@ -41,5 +41,9 @@ router.post(
 
 router.get("/payments", verifyToken, paymentController.listPayments);
 router.post("/payments", verifyToken, paymentController.savePayment);
+router.get("/payments/invoice/:id", verifyToken, paymentController.downloadInvoice);
+router.get("/bookings/:id/invoice", verifyToken, paymentController.downloadInvoice);
+router.delete("/payments/:id", verifyToken, paymentController.deletePayment);
+router.put("/payments/:id", verifyToken, paymentController.updatePayment);
 
 module.exports = router;

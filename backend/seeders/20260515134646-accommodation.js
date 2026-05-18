@@ -7,7 +7,7 @@ module.exports = {
       {
         accommodationId: 1,
         name: 'Sapporo Snow Hotel',
-        address: 'Sapporo, Hokkaido',
+        address: 'Sapporo, Hokkaido, Japan',
         contact: '+81-11-000001',
         amenities: 'WiFi;Breakfast;Heater',
         numberOfRooms: 80,
@@ -25,7 +25,7 @@ module.exports = {
       {
         accommodationId: 3,
         name: 'Bali Beach Resort',
-        address: 'Kuta, Bali',
+        address: 'Kuta, Bali, Indonesia',
         contact: '+62-361-00003',
         amenities: 'Pool;Beachfront;WiFi',
         numberOfRooms: 60,
@@ -34,7 +34,7 @@ module.exports = {
       {
         accommodationId: 4,
         name: 'Taipei Downtown Hotel',
-        address: 'Taipei',
+        address: 'Taipei, Taiwan',
         contact: '+886-2-000004',
         amenities: 'WiFi;Breakfast',
         numberOfRooms: 100,
@@ -43,7 +43,7 @@ module.exports = {
       {
         accommodationId: 5,
         name: 'Taichung Garden Hotel',
-        address: 'Taichung',
+        address: 'Taichung, Taiwan',
         contact: '+886-4-000005',
         amenities: 'WiFi;Breakfast',
         numberOfRooms: 70,

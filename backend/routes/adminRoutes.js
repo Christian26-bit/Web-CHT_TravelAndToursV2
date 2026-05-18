@@ -29,4 +29,7 @@ router.get("/trips", adminController.getTrips);
 router.post("/trips", adminController.saveTrip);
 router.delete("/trips/:id", adminController.deleteTrip);
 
+router.patch("/clients/:id/manager", adminController.updateClientManager);
+router.delete("/clients/:id", adminController.deleteClient);
+
 module.exports = router;

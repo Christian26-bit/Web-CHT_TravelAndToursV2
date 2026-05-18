@@ -33,39 +33,43 @@ export default function Sidebar({ role }) {
   const items = role === "admin" ? adminItems : userItems;
 
   return (
-    <aside className="cv-sidebar border-none shadow-[20px_0_40px_rgba(0,0,0,0.02)]">
-      {/* Brand area */}
-      <div className="px-10 py-10 flex items-center gap-5">
-        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-2xl shadow-[#007BFF]/10 p-2 border border-slate-50">
-          <img src={chtLogo} alt="CHT Logo" className="w-full h-full object-contain" />
-        </div>
-        <div className="flex flex-col">
-          <span className="text-[18px] font-black text-slate-900 tracking-tighter leading-none">CHT Travel</span>
-          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Management System</span>
+    <aside className="cv-sidebar flex flex-col font-['Arimo-Regular',Helvetica] overflow-hidden select-none">
+      <div className="border-[#e2e8f0] border-b border-solid shrink-0 w-full px-[41px] py-[8px]">
+        <div className="h-[73px] w-[162px] relative flex items-center justify-center">
+          <img 
+            src={chtLogo} 
+            alt="CHT Travel Logo" 
+            className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" 
+          />
         </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 px-4 mt-8 space-y-2 overflow-y-auto no-scrollbar">
+      <nav className="flex-1 w-full flex flex-col gap-[4px] pt-[16px] px-[16px] overflow-y-auto no-scrollbar">
         {items.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
-              `flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-400 group ${
-                isActive ? "bg-[#007BFF] text-white shadow-xl shadow-[#007BFF]/20" : "text-slate-400 hover:text-slate-900 hover:bg-slate-50"
+              `flex items-center w-full gap-[12px] h-[48px] pl-[16px] rounded-[8px] transition-all duration-300 group ${
+                isActive 
+                  ? "bg-[#007bff] text-white shadow-[0px_1px_1.5px_rgba(0,0,0,0.1),0px_1px_1px_rgba(0,0,0,0.1)]" 
+                  : "text-[#64748b] hover:bg-slate-100/50 hover:text-[#1e293b]"
               }`
             }
           >
             {({ isActive }) => (
               <>
                 <svg
-                  className={`w-5 h-5 fill-none stroke-current transition-colors ${isActive ? "text-white stroke-[2.5]" : "text-slate-300 group-hover:text-slate-900 stroke-2"}`}
+                  className={`w-[20px] h-[20px] fill-none stroke-current transition-colors shrink-0 ${
+                    isActive ? "text-white stroke-[2]" : "text-[#64748b] stroke-[2] group-hover:text-[#1e293b]"
+                  }`}
                   viewBox="0 0 24 24"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
                 </svg>
-                <span className={`text-[14px] font-bold tracking-tight ${isActive ? "font-black" : ""}`}>
+                <span className={`text-[16px] leading-[24px] whitespace-nowrap transition-colors ${
+                  isActive ? "text-white font-medium" : "text-[#64748b] group-hover:text-[#1e293b]"
+                }`}>
                   {item.name}
                 </span>
               </>
@@ -74,14 +78,17 @@ export default function Sidebar({ role }) {
         ))}
       </nav>
 
-      {/* Footer */}
-      <div className="p-8 mt-auto">
+      <div className="border-[#e2e8f0] border-solid border-t h-[81px] shrink-0 w-full pt-[17px] px-[16px] mt-auto">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-4 px-6 py-4 text-[12px] font-black uppercase tracking-[2px] rounded-2xl transition-all cursor-pointer text-slate-300 hover:bg-red-50 hover:text-red-500 group"
+          className="flex items-center w-full gap-[12px] h-[48px] pl-[16px] transition-all duration-300 group hover:bg-red-50 text-[#64748b] hover:text-red-500 rounded-[8px]"
         >
-          <svg className="w-5 h-5 fill-none stroke-current stroke-2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-          Sign Out
+          <svg className="w-[20px] h-[20px] fill-none stroke-current stroke-[2] shrink-0 transition-colors" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          <span className="text-[16px] leading-[24px] whitespace-nowrap transition-colors">
+            Sign Out
+          </span>
         </button>
       </div>
     </aside>

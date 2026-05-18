@@ -20,14 +20,14 @@ exports.listPayments = async (req, res) => {
 
 exports.savePayment = async (req, res) => {
   try {
-    const { bookingId, amount, paymentDate, paymentMethod, referenceNumber, status } = req.body;
+    const { bookingId, amount, paymentDate, paymentMethod, method, referenceNumber, status } = req.body;
     const payment = await Payment.create({
       BookingID: bookingId,
       Amount: amount,
-      PaymentDate: paymentDate,
-      PaymentMethod: paymentMethod,
+      PaymentDate: paymentDate || new Date(),
+      Method: paymentMethod || method || 'Cash',
       ReferenceNumber: referenceNumber,
-      Status: status
+      Status: status ? status.toUpperCase() : 'PENDING'
     });
     res.json({ success: true, data: payment });
   } catch (error) {
@@ -77,5 +77,37 @@ exports.downloadInvoice = async (req, res) => {
   } catch (error) {
     console.error('Download Invoice Error:', error);
     res.status(500).json({ success: false, error: 'Failed to generate invoice.' });
+  }
+};
+
+exports.deletePayment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Payment.destroy({ where: { paymentId: id } });
+    res.json({ success: true, message: 'Payment deleted successfully.' });
+  } catch (error) {
+    console.error('Delete Payment Error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error.' });
+  }
+};
+
+exports.updatePayment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { bookingId, amount, paymentDate, paymentMethod, method, referenceNumber, status } = req.body;
+    await Payment.update({
+      BookingID: bookingId,
+      Amount: amount,
+      PaymentDate: paymentDate || new Date(),
+      Method: paymentMethod || method || 'Cash',
+      ReferenceNumber: referenceNumber,
+      Status: status ? status.toUpperCase() : 'PENDING'
+    }, {
+      where: { paymentId: id }
+    });
+    res.json({ success: true, message: 'Payment updated successfully.' });
+  } catch (error) {
+    console.error('Update Payment Error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error.' });
   }
 };

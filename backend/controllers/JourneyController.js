@@ -4,7 +4,7 @@ exports.getClientJourneys = async (req, res) => {
   try {
     const employeeId = req.user.id || req.user.employeeId; // Use req.user.id from token
 
-    const whereClause = req.user.role === 'admin' ? {} : { EmployeeID: employeeId };
+    const whereClause = {}; // Show all journeys in demo environment
 
     const bookings = await Booking.findAll({
       where: whereClause,

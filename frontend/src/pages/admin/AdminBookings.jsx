@@ -8,6 +8,10 @@ export default function AdminBookings() {
 
   useEffect(() => {
     let isMounted = true;
+    /**
+     * Fetches all registered booking transactions from backend endpoints.
+     * Evaluates local mount state to prevent memory leaks on component unmount.
+     */
     const fetchBookings = async () => {
       try {
         const res = await api.get("/bookings");
@@ -22,6 +26,10 @@ export default function AdminBookings() {
     return () => { isMounted = false; };
   }, []);
 
+  /**
+   * Reformats the standard pipe-separated database client name into a natural,
+   * human-readable presentation format (First Last).
+   */
   const formatName = (fullName) => {
     if (!fullName) return "—";
     const parts = fullName.split("|");
@@ -37,105 +45,192 @@ export default function AdminBookings() {
   );
 
   return (
-    <div className="cv-main-container animate-fade-in pb-20">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 mb-10">
-        <div>
-          <h1 className="text-[28px] font-black text-slate-900 mb-2">Bookings</h1>
-          <p className="text-[14px] font-medium text-slate-400">Review and manage all travel reservations</p>
-        </div>
-        <div className="bg-white border border-slate-100 rounded-2xl px-8 h-14 flex items-center gap-4 shadow-sm">
-           <div className="w-2.5 h-2.5 rounded-full bg-[#007BFF] animate-pulse"></div>
-           <span className="text-[12px] font-bold text-slate-400 uppercase tracking-widest">Total Travelers:</span>
-           <span className="text-[20px] font-black text-slate-900 tracking-tighter">
-             {bookings.reduce((a, b) => a + (b.PaxCount || 0), 0)}
-           </span>
-        </div>
-      </div>
-
-      {/* Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-        {[
-          { label: "Total Bookings", value: bookings.length, color: "#007BFF", bgColor: "#EBF3FF" },
-          { label: "Pending Review", value: bookings.filter(b => b.Status?.toLowerCase() === 'pending').length, color: "#F97316", bgColor: "#FFF4ED" },
-          { label: "Confirmed", value: bookings.filter(b => b.Status?.toLowerCase() === 'confirmed').length, color: "#10B981", bgColor: "#ECFDF5" },
-        ].map((m, i) => (
-          <div key={i} className="bg-white border border-slate-100 rounded-[24px] p-8 flex justify-between items-center shadow-sm">
-            <div>
-              <p className="text-[12px] font-bold text-slate-400 mb-2">{m.label}</p>
-              <p className="text-[32px] font-black text-slate-900 tracking-tighter leading-none">{m.value}</p>
-            </div>
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: m.bgColor, color: m.color }}>
-              <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-            </div>
+    <div className="flex flex-col w-full h-full min-h-[916px] items-start p-8 gap-8 bg-[#f8fafc] animate-fade-in pb-20">
+      <div className="flex flex-col md:flex-row md:items-center justify-between w-full gap-4">
+        <div className="flex flex-col items-start gap-1">
+          <div className="flex items-center gap-2 text-[14px] text-[#1e293b] font-normal leading-[20px]">
+            <span className="text-[#64748b]">Admin</span>
+            <span className="text-[#cbd5e1] font-light">/</span>
+            <span>Bookings</span>
           </div>
-        ))}
+          <h1 className="font-['Arimo-Bold',Helvetica] font-bold text-[#1e293b] text-[32px] tracking-[-0.02em] leading-[40px] mt-1">
+            Bookings
+          </h1>
+          <p className="font-['Arimo-Regular',Helvetica] font-normal text-[#64748b] text-[14px] leading-[20px]">
+            Review and manage all travel reservations
+          </p>
+        </div>
+        <div className="bg-white border border-solid border-[#e2e8f0] rounded-[12px] p-[12px_24px] flex items-center gap-3 shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
+          <div className="w-2 h-2 rounded-full bg-[#007bff] animate-pulse"></div>
+          <span className="font-['Arimo-Regular',Helvetica] font-normal text-[#64748b] text-[12px] uppercase tracking-wider">
+            Total Travelers:
+          </span>
+          <span className="font-['Arimo-Bold',Helvetica] font-bold text-[#1e293b] text-[18px]">
+            {bookings.reduce((a, b) => a + (b.PaxCount || 0), 0)}
+          </span>
+        </div>
       </div>
 
-      {/* Status Filter */}
-      <div className="flex gap-4 mb-10 overflow-x-auto pb-4 no-scrollbar">
-        {["all", "confirmed", "pending", "cancelled"].map((s) => (
-          <button
-            key={s}
-            onClick={() => setStatusFilter(s)}
-            className={`h-12 px-8 rounded-xl text-[12px] font-black uppercase tracking-widest transition-all border cursor-pointer flex items-center gap-4 ${
-              statusFilter === s ? "bg-[#007BFF] border-[#007BFF] text-white shadow-lg shadow-[#007BFF]/20" : "bg-white text-slate-400 border-slate-100 hover:border-slate-300"
-            }`}
-          >
-            <span>{s}</span>
-            <span className={`px-2 py-0.5 rounded-lg text-[10px] ${statusFilter === s ? "bg-white/20 text-white" : "bg-slate-50 text-slate-400"}`}>
-              {s === "all" ? bookings.length : bookings.filter((b) => b.Status?.toLowerCase() === s).length}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+        <article className="flex flex-row items-center justify-between w-full p-[24px] bg-white rounded-[12px] border border-solid border-[#e2e8f0]">
+          <div className="flex flex-col items-start gap-2">
+            <span className="font-['Arimo-Regular',Helvetica] font-normal text-[#64748b] text-[14px] leading-[20px] uppercase tracking-wider">
+              Total Bookings
             </span>
-          </button>
-        ))}
+            <span className="font-['Arimo-Bold',Helvetica] font-bold text-[#1e293b] text-[24px] tracking-[-0.02em] leading-[32px]">
+              {bookings.length}
+            </span>
+          </div>
+          <div className="flex items-center justify-center w-[48px] h-[48px] rounded-[12px] bg-[#eff6ff] text-[#007bff]">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            </svg>
+          </div>
+        </article>
+
+        <article className="flex flex-row items-center justify-between w-full p-[24px] bg-white rounded-[12px] border border-solid border-[#e2e8f0]">
+          <div className="flex flex-col items-start gap-2">
+            <span className="font-['Arimo-Regular',Helvetica] font-normal text-[#64748b] text-[14px] leading-[20px] uppercase tracking-wider">
+              Pending Review
+            </span>
+            <span className="font-['Arimo-Bold',Helvetica] font-bold text-[#1e293b] text-[24px] tracking-[-0.02em] leading-[32px]">
+              {bookings.filter(b => b.Status?.toLowerCase() === 'pending').length}
+            </span>
+          </div>
+          <div className="flex items-center justify-center w-[48px] h-[48px] rounded-[12px] bg-[#fff7ed] text-[#f97316]">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+        </article>
+
+        <article className="flex flex-row items-center justify-between w-full p-[24px] bg-white rounded-[12px] border border-solid border-[#e2e8f0]">
+          <div className="flex flex-col items-start gap-2">
+            <span className="font-['Arimo-Regular',Helvetica] font-normal text-[#64748b] text-[14px] leading-[20px] uppercase tracking-wider">
+              Confirmed
+            </span>
+            <span className="font-['Arimo-Bold',Helvetica] font-bold text-[#1e293b] text-[24px] tracking-[-0.02em] leading-[32px]">
+              {bookings.filter(b => b.Status?.toLowerCase() === 'confirmed').length}
+            </span>
+          </div>
+          <div className="flex items-center justify-center w-[48px] h-[48px] rounded-[12px] bg-[#f0fdf4] text-[#10b981]">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+        </article>
       </div>
 
-      {/* Table */}
-      <div className="cv-table-card">
+      <div className="flex gap-2.5 overflow-x-auto pb-1 no-scrollbar w-full">
+        {["all", "confirmed", "pending", "cancelled"].map((s) => {
+          const count = s === "all" ? bookings.length : bookings.filter((b) => b.Status?.toLowerCase() === s).length;
+          const active = statusFilter === s;
+          return (
+            <button
+              key={s}
+              onClick={() => setStatusFilter(s)}
+              className={`h-9 px-4 rounded-[6px] text-[13px] font-medium tracking-wide transition-all border cursor-pointer flex items-center gap-2 ${
+                active
+                  ? "bg-[#007bff] border-[#007bff] text-white shadow-sm"
+                  : "bg-white text-[#64748b] border-[#cbd5e1] hover:border-[#94a3b8] hover:text-[#1e293b]"
+              }`}
+            >
+              <span className="capitalize">{s}</span>
+              <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${active ? "bg-white/20 text-white" : "bg-slate-100 text-slate-500"}`}>
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="w-full bg-white rounded-[12px] border border-solid border-[#e2e8f0] shadow-[0px_1px_2px_rgba(0,0,0,0.05)] overflow-hidden">
         <div className="cv-table-container no-scrollbar">
           <table className="cv-table">
             <thead>
-              <tr>
-                <th className="min-w-[150px]">Booking ID</th>
-                <th className="min-w-[250px]">Customer</th>
-                <th className="min-w-[300px]">Tour Package</th>
-                <th className="min-w-[200px]">Agent</th>
-                <th className="text-right pr-12">Status</th>
+              <tr className="border-b border-solid border-[#e2e8f0] h-[40px]">
+                <th className="font-normal w-[15%]">
+                  <div className="font-['Arimo-Regular',Helvetica] font-normal text-[#64748b] text-[13px] uppercase tracking-wider ml-[8px]">
+                    Booking ID
+                  </div>
+                </th>
+                <th className="font-normal w-[25%]">
+                  <div className="font-['Arimo-Regular',Helvetica] font-normal text-[#64748b] text-[13px] uppercase tracking-wider ml-[8px]">
+                    Customer
+                  </div>
+                </th>
+                <th className="font-normal w-[30%]">
+                  <div className="font-['Arimo-Regular',Helvetica] font-normal text-[#64748b] text-[13px] uppercase tracking-wider ml-[8px]">
+                    Tour Package
+                  </div>
+                </th>
+                <th className="font-normal w-[20%]">
+                  <div className="font-['Arimo-Regular',Helvetica] font-normal text-[#64748b] text-[13px] uppercase tracking-wider ml-[8px]">
+                    Agent
+                  </div>
+                </th>
+                <th className="font-normal w-[10%] text-right pr-2">
+                  <div className="font-['Arimo-Regular',Helvetica] font-normal text-[#64748b] text-[13px] uppercase tracking-wider text-right">
+                    Status
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                [1, 2, 3, 4, 5].map(i => <tr key={i}><td colSpan="5" className="px-10 py-8"><div className="h-12 bg-slate-50 animate-pulse rounded-2xl w-full" /></td></tr>)
+                [1, 2, 3].map(i => (
+                  <tr key={i} className="border-b border-solid border-[#e2e8f0] h-[39px]">
+                    <td colSpan="5" className="px-[8px]">
+                      <div className="h-6 bg-slate-100 animate-pulse rounded w-full" />
+                    </td>
+                  </tr>
+                ))
               ) : filtered.length === 0 ? (
-                <tr><td colSpan="5" className="px-10 py-24 text-center font-black text-slate-200 uppercase tracking-[10px]">Registry Clear</td></tr>
+                <tr>
+                  <td colSpan="5" className="py-8 text-center text-slate-500 text-[14px]">
+                    No bookings found
+                  </td>
+                </tr>
               ) : (
                 filtered.map((b) => (
-                  <tr key={b.BookingID} className="hover:bg-slate-50/50 transition-colors group">
-                    <td className="px-10 py-10">
-                      <span className="text-[14px] font-black text-[#007BFF] bg-blue-50 px-4 py-2 rounded-lg border border-blue-100 whitespace-nowrap">BK-{String(b.BookingID).padStart(4, "0")}</span>
-                    </td>
-                    <td className="px-10 py-10">
-                      <div className="flex flex-col min-w-0">
-                        <span className="text-[16px] font-black text-slate-900 group-hover:text-[#007BFF] transition-colors truncate block" title={formatName(b.Client?.Name)}>{formatName(b.Client?.Name)}</span>
-                        <span className="text-[12px] font-bold text-slate-400 uppercase tracking-tighter mt-1 whitespace-nowrap">Verified Member</span>
+                  <tr key={b.BookingID} className="hover:bg-slate-50 transition-colors h-[48px]">
+                    <td>
+                      <div className="font-['Arimo-Regular',Helvetica] font-normal text-[#1e293b] text-[14px] ml-[8px]">
+                        BK-{String(b.BookingID).padStart(4, "0")}
                       </div>
                     </td>
-                    <td className="px-10 py-10">
-                      <div className="flex flex-col min-w-0">
-                        <span className="text-[15px] font-bold text-slate-900 truncate block" title={b.Package?.Name}>{b.Package?.Name || "Custom Tour"}</span>
-                        <span className="text-[12px] font-bold text-slate-400 uppercase tracking-tighter mt-1 whitespace-nowrap">{b.Package?.Destination} • {b.PaxCount} Pax</span>
+                    <td>
+                      <div className="font-['Arimo-Regular',Helvetica] font-normal text-[#1e293b] text-[14px] ml-[8px] truncate max-w-[220px]" title={formatName(b.Client?.Name)}>
+                        {formatName(b.Client?.Name)}
                       </div>
                     </td>
-                    <td className="px-10 py-10">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-[11px] font-black text-slate-400 flex-shrink-0">AG</div>
-                        <span className="text-[14px] font-bold text-slate-900 truncate" title={formatName(b.Employee?.Name)}>{formatName(b.Employee?.Name)}</span>
+                    <td>
+                      <div className="font-['Arimo-Regular',Helvetica] font-normal text-[#1e293b] text-[14px] ml-[8px] truncate max-w-[260px]" title={b.Package?.Name}>
+                        {b.Package?.Name || "Custom Tour"} <span className="text-[#cbd5e1] mx-1.5">•</span> <span className="text-slate-500">{b.PaxCount} Pax</span>
                       </div>
                     </td>
-                    <td className="px-10 py-10 text-right pr-12">
-                      <span className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest border whitespace-nowrap ${
-                        b.Status?.toLowerCase() === 'confirmed' || b.Status?.toLowerCase() === 'paid' ? "bg-emerald-50 text-emerald-600 border-emerald-100" : b.Status?.toLowerCase() === 'pending' ? "bg-blue-50 text-[#007BFF] border-blue-100" : "bg-slate-50 text-slate-400 border-slate-100"
-                      }`}>{b.Status}</span>
+                    <td>
+                      <div className="flex items-center gap-2.5 ml-[8px]">
+                        <div className="w-6 h-6 rounded-md bg-blue-50 flex items-center justify-center text-[10px] font-black text-[#007BFF] border border-blue-100 shrink-0">
+                          AG
+                        </div>
+                        <span className="font-['Arimo-Regular',Helvetica] font-normal text-[#1e293b] text-[14px] truncate" title={formatName(b.Employee?.Name)}>
+                          {formatName(b.Employee?.Name)}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="text-right pr-2">
+                      <div className="flex justify-end items-center">
+                        <span className={`px-2.5 py-0.5 rounded-[4px] text-[11px] font-medium uppercase tracking-wider border whitespace-nowrap ${
+                          b.Status?.toLowerCase() === 'confirmed' || b.Status?.toLowerCase() === 'paid' 
+                            ? "bg-emerald-50 text-emerald-600 border-emerald-100" 
+                            : b.Status?.toLowerCase() === 'pending' 
+                              ? "bg-amber-50 text-amber-600 border-amber-100" 
+                              : "bg-red-50 text-red-600 border-red-100"
+                        }`}>
+                          {b.Status || "Pending"}
+                        </span>
+                      </div>
                     </td>
                   </tr>
                 ))

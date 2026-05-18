@@ -402,3 +402,41 @@ exports.deleteTrip = async (req, res) => {
     res.status(500).json({ success: false, error: "Failed to delete trip" });
   }
 };
+
+exports.updateClientManager = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { managedByEmployeeId } = req.body;
+
+    const client = await Client.findByPk(id);
+    if (!client) {
+      return res.status(404).json({ success: false, error: "Customer not found" });
+    }
+
+    await client.update({ managedByEmployeeId: managedByEmployeeId || null });
+    res.json({ success: true, message: "Manager assignment updated successfully." });
+  } catch (err) {
+    console.error("Update client manager error:", err);
+    res.status(500).json({ success: false, error: "Failed to update manager assignment." });
+  }
+};
+
+exports.deleteClient = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const hasBookings = await Booking.count({ where: { ClientID: id } });
+    if (hasBookings > 0) {
+      return res.status(400).json({
+        success: false,
+        error: "Cannot delete customer with existing bookings."
+      });
+    }
+
+    await Client.destroy({ where: { clientId: id } });
+    res.json({ success: true, message: "Customer deleted successfully." });
+  } catch (err) {
+    console.error("Delete customer error:", err);
+    res.status(500).json({ success: false, error: "Failed to delete customer." });
+  }
+};
